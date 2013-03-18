@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.0.css"/>
+        <title> TechForum Mobile App </title>
+
+        <script src="js/lib/jquery-1.9.0.js"></script>
+        <script src="js/lib/jquery.mobile-1.3.0.js"></script>
+        <script src="js/lib/angular.js"></script> 
+        <script src="js/lib/angular-resource.js"></script> 
+        <script src="js/lib/jquery-mobile-angular-adapter.js"></script> 
+        <script src="js/lib/cordova-2.5.0.js"></script>
+
+        <script src="js/app.js"></script> 
+        <script src="js/services.js"></script> 
+        <script src="js/controllers.js"></script> 
+    </head>
+    <body data-ng-app="atosApp">
+        <!--MAIN PAGE-->
+        <div data-role="page" id="main" >
+            <div data-role="header"><h3>TechForum Mobile App</h3></div>
+            <div data-role="content">
+                <a data-role="button" data-transition="slide" 
+                   href="conferences">Conferences</a>
+                <a data-role="button" data-transition="slide" 
+                   href="#">Map</a>
+                <a data-role="button" data-transition="slide" 
+                   href="#">Feelbacks</a>
+            </div>
+        </div>
+
+        <!--CONFERENCES PAGE-->
+        <div id="oConference" data-role="page" data-ngm-shared-controller="sConf:ConferencesCTRL">
+            <div data-role="header">
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                <h3>Conferences</h3>
+            </div>
+            <div data-role="content">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="oConference">Conferences</a></li>
+                        <li><a href="oDemo">Demos</a></li>
+                        <li><a href="oPoster">Posters</a></li>
+                    </ul>
+                </div>
+                <div data-role="navbar" >
+                    <ul>
+                        <li><a href="oConference1" class="ui-btn-active ui-state-persist"
+                               data-ng-click="sConf.day(1)">
+                                D1</a></li>
+                        <li><a href="#" 
+                               data-ng-click="sConf.day(2)" >
+                                D2</a></li>
+                    </ul>
+                </div>
+                <ul data-ng-repeat="c in sConf.conferences | orderBy:'schedule'" 
+                    data-role="listview" data-divider-theme="a" data-inset="true"
+                    data-ng-show="c.day==sConf.dayValue">
+                    <li data-role="list-divider">
+                        {{c.schedule}}
+                    </li>
+                    <li data-theme="c" data-ng-click="sConf.select(c.id)">
+                        <a href='conferences/details/{{c.id}}' data-transition="slide">
+                            {{c.title}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+    </body>
+</html>
