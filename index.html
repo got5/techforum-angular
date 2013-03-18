@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <!--CONFERENCES PAGE-->
+        <!--CONFERENCES PAGE - Onglet Conferences-->
         <div id="oConference" data-role="page" data-ngm-shared-controller="sConf:ConferencesCTRL">
             <div data-role="header">
                 <a data-role="button" data-direction="reverse" 
@@ -44,14 +44,14 @@
             <div data-role="content">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="oConference">Conferences</a></li>
-                        <li><a href="oDemo">Demos</a></li>
-                        <li><a href="oPoster">Posters</a></li>
+                        <li><a href="conferences/oConference" class="ui-btn-active ui-state-persist">Conferences</a></li>
+                        <li><a href="conferences/oDemo" data-transition="none">Demos</a></li>
+                        <li><a href="conferences/oPoster" data-transition="none">Posters</a></li>
                     </ul>
                 </div>
                 <div data-role="navbar" >
                     <ul>
-                        <li><a href="oConference1" class="ui-btn-active ui-state-persist"
+                        <li><a href="#" class="ui-btn-active ui-state-persist"
                                data-ng-click="sConf.day(1)">
                                 D1</a></li>
                         <li><a href="#" 
@@ -66,14 +66,73 @@
                         {{c.schedule}}
                     </li>
                     <li data-theme="c" data-ng-click="sConf.select(c.id)">
-                        <a href='conferences/details/{{c.id}}' data-transition="slide">
-                            {{c.title}}
+                        <a href='conferences/details/{{c.id}}'>
+                            {{c.title + " by " + c.author}}
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
 
-
+        <!--DETAILS CONFERENCE PAGE-->
+        <div id="detailsConference" data-role="page" data-ngm-shared-controller="sConf:ConferencesCTRL">
+            <div data-role="header">
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                <h3>Details</h3>
+            </div>
+            <div data-role="content" >
+                <table border="1">
+                    <tr><td>Title</td><td>{{sConf.selection.title}}</td></tr>
+                    <tr><td>Author</td><td>{{sConf.selection.author}}</td></tr>
+                    <tr><td>Schedule</td><td>{{sConf.selection.schedule}}</td></tr>
+                    <tr><td>Day</td><td>{{sConf.selection.day}}</td></tr>
+                </table>                
+            </div>
+        </div>
+        
+        <!--CONFERENCES PAGE - Onglet Demos-->
+        <div id="oDemo" data-role="page" data-ngm-shared-controller="sConf:ConferencesCTRL">
+            <div data-role="header">
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                <h3>Conferences</h3>
+            </div>
+            <div data-role="content">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="conferences/oConference" data-transition="none">Conferences</a></li>
+                        <li><a href="conferences/oDemo" class="ui-btn-active ui-state-persist">Demos</a></li>
+                        <li><a href="conferences/oPoster" data-transition="none">Posters</a></li>
+                    </ul>
+                </div>
+                DEMO CONTENT
+            </div>
+        </div>
+    
+        <!--CONFERENCES PAGE - Onglet Posters-->
+        <div id="oPoster" data-role="page" data-ngm-shared-controller="sConf:ConferencesCTRL">
+            <div data-role="header">
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                <h3>Conferences</h3>
+            </div>
+            <div data-role="content">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="conferences/oConference" data-transition="none">Conferences</a></li>
+                        <li><a href="conferences/oDemo" data-transition="none">Demos</a></li>
+                        <li><a href="conferences/oPoster" class="ui-btn-active ui-state-persist">Posters</a></li>
+                    </ul>
+                </div>
+                POSTER CONTENT
+            </div>
+        </div>
     </body>
 </html>
