@@ -1,28 +1,23 @@
 
-var atosApp = angular.module('atosApp', ['atosApp.Services']).config([
+var atosApp = angular.module('atosApp', ['atosApp.Services','atosApp.Filters']).config([
     '$routeProvider',
     function($routeProvider) {
         $routeProvider.
-                when('/conferences', {redirectTo:"/conferences/oConference"}).
+                when('/', {templateUrl:"#main"}).
                 when('/conferences/details/:id', {
-                    templateUrl: '#detailsConference', 
+                    templateUrl: '#detailsConference',
                     onActivate: 'select(id)',
                     jqmOptions: {transition:'slide'}
                 }).
-                when('/conferences/oConference', {
-                    templateUrl: '#oConference',
+                when('/conferences', {
+                    templateUrl: '#list',
                     jqmOptions: {transition:'slide'}
                 }).
-                when('/conferences/oDemo', {
-                    templateUrl: '#oDemo', 
-                    jqmOptions: {transition:'slide'}
-                }).
-                when('/conferences/oPoster', {
-                    templateUrl: '#oPoster', 
-                    jqmOptions: {transition:'slide'}
-                });
+                otherwise({redirectTo:'/'});
     }]).config(
         function($compileProvider) {
             $compileProvider.urlSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
-        }
-);
+        }).config(
+        function($locationProvider) {
+            $locationProvider.html5Mode(false);
+        });

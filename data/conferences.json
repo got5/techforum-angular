@@ -2,77 +2,148 @@
     "id":0,
     "title": "Welcome, Intro & Keynotes",
     "author": "Howard Lewis Ship",
-    "schedule": "13:30",
-    "day":1
+    "when": {"start":"13:30","end":"14:00"},
+    "where": "Seclin",
+    "day":1,
+    "likes":0,
+    "category":"conference"
 },{
     "id":1,
     "title": "Template Skinning",
     "author": "Igor Drobiazko",
-    "schedule": "14:00",
-    "day":1
+    "when": {"start":"14:00","end":"14:30"},
+    "where": "Seclin",
+    "day":1,
+    "likes":0,
+    "category":"conference"
 },{
     "id":2,
     "title": "Why Tapestry ?",
     "author": "Kalle Korhonen",
-    "schedule": "15:45",
-    "day":1
+    "when": {"start":"15:45","end":"16:45"},
+    "where": "Seclin",
+    "day":1,
+    "likes":0,
+    "category":"conference"
 },{
     "id":3,
     "title": "Dive into Sencha",
     "author": "Emmanuel Demey",
-    "schedule": "15:45",
-    "day":1
+    "when": {"start":"17:15","end":"17:45"},
+    "where": "Seclin",
+    "day":1,
+    "likes":0,
+    "category":"conference"
 },{
     "id":4,
     "title": "When Tapestry meet jQuery",
     "author":"François Facon",
-    "schedule": "18:15",
-    "day":1
+    "when": {"start":"18:15","end":"18:45"},
+    "where": "Seclin",
+    "day":1,
+    "likes":0,
+    "category":"conference"
 },{
     "id":5,
     "title": "ChenilleKit",
     "author":"Massimo Lusetti",
-    "schedule": "09:00",
-    "day":2
+    "when": {"start":"09:00","end":"09:30"},
+    "where": "Seclin",
+    "day":2,
+    "likes":0,
+    "category":"conference"
 },{
     "id":5,
     "title": "Easy Crud for Tapestry",
     "author":"Thiago H.de Paula Figueiredo",
-    "schedule": "10:00",
-    "day":2
+    "when": {"start":"10:00","end":"10:30"},
+    "where": "Seclin",
+    "day":2,
+    "likes":0,
+    "category":"conference"
 },{
     "id":6,
     "title": "Which mobile Toolkit for Tapestry",
     "author":"Clement Uster",
-    "schedule": "11:00",
-    "day":2
+    "when": {"start":"11:00","end":"11:30"},
+    "where": "Seclin",
+    "day":2,
+    "likes":0,
+    "category":"conference"
 },{
     "id":7,
     "title": "Make designers love Tapestry",
     "author":"Armaury Willement",
-    "schedule": "12:00",
-    "day":2
+    "when": {"start":"12:00","end":"12:30"},
+    "where": "Seclin",
+    "day":2,
+    "likes":0,
+    "category":"conference"
 },{
     "id":8,
     "title": "Cross-site request forgery protection for Apache",
     "author":"Ulrich Stärk",
-    "schedule": "14:00",
-    "day":2
+    "when": {"start":"14:00","end":"14:30"},
+    "where": "Seclin",
+    "day":2,
+    "likes":0,
+    "category":"conference"
 },{
     "id":9,
     "title": "Monitoring Tapestry",
     "author":"Josh Canfield",
-    "schedule": "15:00",
-    "day":2
+    "when": {"start":"15:00","end":"15:30"},
+    "where": "Seclin",
+    "day":2,
+    "likes":0,
+    "category":"conference"
 },{
     "id":10,
     "title": "Showroom",
-    "schedule": "15:45",
-    "day":2
+    "when": {"start":"15:45","end":"16:15"},
+    "where": "Seclin",
+    "day":2,
+    "likes":0,
+    "category":"conference"
 },{
     "id":11,
     "title": "End of conference",
     "author":"Howard Lewis Ship",
-    "schedule": "16:00",
-    "day":2
+    "when": {"start":"16:00","end":"16:30"},
+    "where": "Seclin",
+    "day":2,
+    "likes":0,
+    "category":"conference"
+},{
+    "id":12,
+    "title": "Better JS stack",
+    "author":"Andreas Andreou",
+    "when": {"start":"14:00","end":"14:30"},
+    "where": "Seclin",
+    "likes":0,
+    "category":"demo"
+},{
+    "id":13,
+    "title": "Introduction to portlets",
+    "author":"Armaury Willemant",
+    "when": {"start":"14:00","end":"14:30"},
+    "where": "Seclin",
+    "likes":0,
+    "category":"demo"
+},{
+    "id":14,
+    "title": "Plastic is fantastic",
+    "author":"Taha Hafeez",
+    "when": {"start":"14:00","end":"14:30"},
+    "where": "Seclin",
+    "likes":0,
+    "category":"poster"
+},{
+    "id":15,
+    "title": "Tapestry in 10 minutes",
+    "author":"Bob Harner",
+    "when": {"start":"14:00","end":"14:30"},
+    "where": "Seclin",
+    "likes":0,
+    "category":"poster"
 }]
