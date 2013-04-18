@@ -1,149 +1,134 @@
-[{
-    "id":0,
-    "title": "Welcome, Intro & Keynotes",
-    "author": "Howard Lewis Ship",
-    "when": {"start":"13:30","end":"14:00"},
-    "where": "Seclin",
-    "day":1,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":1,
-    "title": "Template Skinning",
-    "author": "Igor Drobiazko",
-    "when": {"start":"14:00","end":"14:30"},
-    "where": "Seclin",
-    "day":1,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":2,
-    "title": "Why Tapestry ?",
-    "author": "Kalle Korhonen",
-    "when": {"start":"15:45","end":"16:45"},
-    "where": "Seclin",
-    "day":1,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":3,
-    "title": "Dive into Sencha",
-    "author": "Emmanuel Demey",
-    "when": {"start":"17:15","end":"17:45"},
-    "where": "Seclin",
-    "day":1,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":4,
-    "title": "When Tapestry meet jQuery",
-    "author":"François Facon",
-    "when": {"start":"18:15","end":"18:45"},
-    "where": "Seclin",
-    "day":1,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":5,
-    "title": "ChenilleKit",
-    "author":"Massimo Lusetti",
-    "when": {"start":"09:00","end":"09:30"},
-    "where": "Seclin",
-    "day":2,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":5,
-    "title": "Easy Crud for Tapestry",
-    "author":"Thiago H.de Paula Figueiredo",
-    "when": {"start":"10:00","end":"10:30"},
-    "where": "Seclin",
-    "day":2,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":6,
-    "title": "Which mobile Toolkit for Tapestry",
-    "author":"Clement Uster",
-    "when": {"start":"11:00","end":"11:30"},
-    "where": "Seclin",
-    "day":2,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":7,
-    "title": "Make designers love Tapestry",
-    "author":"Armaury Willement",
-    "when": {"start":"12:00","end":"12:30"},
-    "where": "Seclin",
-    "day":2,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":8,
-    "title": "Cross-site request forgery protection for Apache",
-    "author":"Ulrich Stärk",
-    "when": {"start":"14:00","end":"14:30"},
-    "where": "Seclin",
-    "day":2,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":9,
-    "title": "Monitoring Tapestry",
-    "author":"Josh Canfield",
-    "when": {"start":"15:00","end":"15:30"},
-    "where": "Seclin",
-    "day":2,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":10,
-    "title": "Showroom",
-    "when": {"start":"15:45","end":"16:15"},
-    "where": "Seclin",
-    "day":2,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":11,
-    "title": "End of conference",
-    "author":"Howard Lewis Ship",
-    "when": {"start":"16:00","end":"16:30"},
-    "where": "Seclin",
-    "day":2,
-    "likes":0,
-    "category":"conference"
-},{
-    "id":12,
-    "title": "Better JS stack",
-    "author":"Andreas Andreou",
-    "when": {"start":"14:00","end":"14:30"},
-    "where": "Seclin",
-    "likes":0,
-    "category":"demo"
-},{
-    "id":13,
-    "title": "Introduction to portlets",
-    "author":"Armaury Willemant",
-    "when": {"start":"14:00","end":"14:30"},
-    "where": "Seclin",
-    "likes":0,
-    "category":"demo"
-},{
-    "id":14,
-    "title": "Plastic is fantastic",
-    "author":"Taha Hafeez",
-    "when": {"start":"14:00","end":"14:30"},
-    "where": "Seclin",
-    "likes":0,
-    "category":"poster"
-},{
-    "id":15,
-    "title": "Tapestry in 10 minutes",
-    "author":"Bob Harner",
-    "when": {"start":"14:00","end":"14:30"},
-    "where": "Seclin",
-    "likes":0,
-    "category":"poster"
-}]
+[
+    {
+        "title": "Welcome, Intro & Keynotes",
+        "author": "Howard Lewis Ship",
+        "when": {"start": "13:30", "end": "14:00"},
+        "where": "Seclin",
+        "day": 1,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Template Skinning",
+        "author": "Igor Drobiazko",
+        "when": {"start": "14:00", "end": "14:30"},
+        "where": "Seclin",
+        "day": 1,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Why Tapestry ?",
+        "author": "Kalle Korhonen",
+        "when": {"start": "15:45", "end": "16:45"},
+        "where": "Seclin",
+        "day": 1,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Dive into Sencha",
+        "author": "Emmanuel Demey",
+        "when": {"start": "17:15", "end": "17:45"},
+        "where": "Seclin",
+        "day": 1,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "When Tapestry meet jQuery",
+        "author": "François Facon",
+        "when": {"start": "18:15", "end": "18:45"},
+        "where": "Seclin",
+        "day": 1,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "ChenilleKit",
+        "author": "Massimo Lusetti",
+        "when": {"start": "09:00", "end": "09:30"},
+        "where": "Seclin",
+        "day": 2,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Easy Crud for Tapestry",
+        "author": "Thiago H.de Paula Figueiredo",
+        "when": {"start": "10:00", "end": "10:30"},
+        "where": "Seclin",
+        "day": 2,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Which mobile Toolkit for Tapestry",
+        "author": "Clement Uster",
+        "when": {"start": "11:00", "end": "11:30"},
+        "where": "Seclin",
+        "day": 2,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Make designers love Tapestry",
+        "author": "Armaury Willement",
+        "when": {"start": "12:00", "end": "12:30"},
+        "where": "Seclin",
+        "day": 2,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Cross-site request forgery protection for Apache",
+        "author": "Ulrich Stärk",
+        "when": {"start": "14:00", "end": "14:30"},
+        "where": "Seclin",
+        "day": 2,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Monitoring Tapestry",
+        "author": "Josh Canfield",
+        "when": {"start": "15:00", "end": "15:30"},
+        "where": "Seclin",
+        "day": 2,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Showroom",
+        "when": {"start": "15:45", "end": "16:15"},
+        "where": "Seclin",
+        "day": 2,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "End of conference",
+        "author": "Howard Lewis Ship",
+        "when": {"start": "16:00", "end": "16:30"},
+        "where": "Seclin",
+        "day": 2,
+        "likes": 0,
+        "category": "conference"
+    }, {
+        "title": "Better JS stack",
+        "author": "Andreas Andreou",
+        "when": {"start": "14:00", "end": "14:30"},
+        "where": "Seclin",
+        "likes": 0,
+        "category": "demo"
+    }, {
+        "title": "Introduction to portlets",
+        "author": "Armaury Willemant",
+        "when": {"start": "14:00", "end": "14:30"},
+        "where": "Seclin",
+        "likes": 0,
+        "category": "demo"
+    }, {
+        "title": "Plastic is fantastic",
+        "author": "Taha Hafeez",
+        "when": {"start": "14:00", "end": "14:30"},
+        "where": "Seclin",
+        "likes": 0,
+        "category": "poster"
+    }, {
+        "title": "Tapestry in 10 minutes",
+        "author": "Bob Harner",
+        "when": {"start": "14:00", "end": "14:30"},
+        "where": "Seclin",
+        "likes": 0,
+        "category": "poster"
+    }
+]

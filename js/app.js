@@ -1,9 +1,9 @@
 
-var atosApp = angular.module('atosApp', ['atosApp.Services', 'atosApp.Filters']).config([
+var atosApp = angular.module('atosApp', ['ngResource','atosApp.Services', 'atosApp.Filters']).config([
     '$routeProvider',
     function($routeProvider) {
         $routeProvider.
-                when('/', {templateUrl: "#main"}).
+                when('/', { templateUrl: "#main"}).
                 when('/conferences/details/:id', {
             templateUrl: '#detailsConference',
             onActivate: 'selectConference(id)',
@@ -11,6 +11,10 @@ var atosApp = angular.module('atosApp', ['atosApp.Services', 'atosApp.Filters'])
         }).
                 when('/conferences', {
             templateUrl: '#list',
+            jqmOptions: {transition: 'slide'}
+        }).
+                when('/map', {
+            templateUrl: '#map',
             jqmOptions: {transition: 'slide'}
         }).
                 when('/feelbacks', {
@@ -32,7 +36,8 @@ function printLocalStorage(full) {
     var sum = 0;
     for (var x in localStorage) {
         var val = ((localStorage[x].length * 2) / 1024 / 1024).toFixed(6);
-        if(full)console.log(x + "=" + val + " MB");
+        if (full)
+            console.log(x + "=" + val + " MB");
         sum += parseFloat(val);
     }
     console.log("TOTAL: " + sum + " MB");

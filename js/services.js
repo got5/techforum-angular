@@ -1,5 +1,6 @@
 
-var WEBSERVICE_HOST = "http://localhost:3000";
+var PRODUCTION = true;
+var WEBSERVICE_HOST = PRODUCTION ? "http://techforum-mvand.rhcloud.com/" : "http://localhost:8080";
 
 var services = angular.module('atosApp.Services', []);
 
@@ -8,6 +9,26 @@ var Error = {
     NO_INTERNET: "No Internet",
     NO_LOCAL_DATA: "No Local Data"
 };
+
+services.factory('offline', function($resource) {
+    var save = null;
+    return {
+        populate: function(fn) {
+            if(save) {
+                fn(save);
+            } else {
+                $resource('data/conferences.json').query(function(data) {
+                    //simulate mongodb id
+                    for(var index in data) data[index]["_id"] = index; 
+                    //
+                    save = data;
+                    fn(save);
+                });
+            }
+        }
+    };
+});
+
 
 services.factory('routines', function($http, $q) {
     return {
@@ -25,6 +46,7 @@ services.factory('routines', function($http, $q) {
                 } else {
                     console.log("- GET (" + localKey + ") fail from local");
                     deffered.reject(Error.NO_LOCAL_DATA);
+
                 }
                 return deffered.promise;
             } else if (navigator.network && navigator.network.connection.type === Connection.NONE) {
@@ -36,7 +58,6 @@ services.factory('routines', function($http, $q) {
                         function(response) {
                             console.log("- GET (" + localKey + ") success from host");
                             window.localStorage.setItem(localKey, angular.toJson(response.data));
-                            console.log(response.data,localStorage.getItem(localKey));
                             return response.data;
                         },
                         function(error) {
@@ -63,7 +84,7 @@ services.factory('routines', function($http, $q) {
                             return response.data;
                         },
                         function(error) {
-                            console.log("- POST fail from host")
+                            console.log("- POST fail from host", error);
                             deffered.reject(Error.NO_RESPONSE);
                             return deffered.promise;
                         }

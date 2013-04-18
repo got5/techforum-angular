@@ -7,30 +7,34 @@
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.0.css"/>
         <title> TechForum Mobile App </title>
 
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
         <script src="js/lib/jquery-1.9.0.js"></script>
         <script src="js/lib/jquery.mobile-1.3.0.js"></script>
         <script src="js/lib/angular.js"></script>
-        <script src="js/lib/jquery-mobile-angular-adapter.js"></script> 
-        <script src="js/lib/cordova-2.5.0.js"></script>
+        <script src="js/lib/angular-resource.js"></script>
+        <script src="js/lib/jquery-mobile-angular-adapter.js"></script>
+        <script src="phonegap.js"></script>
 
         <script src="js/app.js"></script> 
         <script src="js/services.js"></script> 
         <script src="js/filters.js"></script> 
         <script src="js/controllers.js"></script> 
+
     </head>
     <body data-ng-app="atosApp">
         <!--MAIN PAGE-->
-        <div data-role="page" id="main" >
+        <div data-role="page" id="main">
             <div data-role="header"><h3>TechForum Mobile App</h3></div>
             <div data-role="content">
                 <a data-role="button" href="#!/conferences">Conferences</a>
-                <a data-role="button" href="#">Map</a>
+                <a data-role="button" href="#!/map">Map</a>
                 <a data-role="button" href="#!/feelbacks">Feelbacks</a>
             </div>
         </div>
 
         <!--CONFERENCES PAGE-->
-        <div id="list" data-role="page" data-ng-controller="ConferenceList">
+        <div id="list" data-role="page" data-ng-controller="ConferenceList" 
+             data-ngm-swiperight="swipe('right')" data-ngm-swipeleft="swipe('left')">
             <div data-role="popup" data-overlay-theme="a" id="conferenceListPopup">
                 <h3>Loading...</h3>
             </div>
@@ -73,8 +77,7 @@
                         {{c.when.start}}
                     </li>
                     <li data-theme="c">
-                        <a href='#!/conferences/details/{{c._id}}'
-                           >
+                        <a href='#!/conferences/details/{{c._id}}'>
                             {{c.title + " by " + c.author}}
                         </a>
                     </li>
@@ -89,9 +92,9 @@
                    data-rel="back" data-transition="slide" 
                    data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
                     Back</a>
-                <a data-role="button" data-theme="b" data-icon="check" data-iconpos="right"
-                   class="ui-btn-right">
-                    Like</a>
+                <a data-role="button" data-icon="refresh" data-iconpos="notext"
+                   data-ng-click="update()" data-mini="true"
+                   data-inline="true">Refresh</a>
                 <h3>{{selection.title}}</h3>
             </div>
             <div data-role="content" >
@@ -132,18 +135,21 @@
                                 <p>{{m.msg}}</p>
                             </li>
                         </ul>
-                        <form data-ajax="false" data-ng-submit="submit('comment')" data-ng-controller="MessageForm">
-                            <h2>Add a comment </h2>
-                            <fieldset data-role="controlgroup">
-                                <label for="textinput1">Name</label>
-                                <input id="textinput1" type="text" data-ng-model="name" required>
-                            </fieldset>
-                            <fieldset data-role="controlgroup">
-                                <label for="textarea1">Comment</label>
-                                <textarea id="textarea1" data-ng-model="msg" style="resize: none" required> </textarea>
-                            </fieldset>
-                            <input type="submit" value="Post">
-                        </form>
+                        <div data-ng-switch="offline">
+                            <form data-ng-switch-when="false" data-ajax="false" data-ng-submit="submit('comment')" data-ng-controller="MessageForm">
+                                <h2>Add a comment </h2>
+                                <fieldset data-role="controlgroup">
+                                    <label for="textinput1">Name</label>
+                                    <input id="textinput1" type="text" data-ng-model="name" required>
+                                </fieldset>
+                                <fieldset data-role="controlgroup">
+                                    <label for="textarea1">Comment</label>
+                                    <textarea id="textarea1" data-ng-model="msg" style="resize: none" required> </textarea>
+                                </fieldset>
+                                <input type="submit" value="Post">
+                            </form>
+                            <p data-ng-switch-when="true" align="center">Posting comments is not available in offline mode</p>
+                        </div>
                     </div>
                 </div>
 
@@ -168,18 +174,49 @@
                         <p style="overflow: visible; white-space: normal">{{m.msg}}</p>
                     </li>
                 </ul>
-                <form data-ajax="false" data-ng-submit="submit('feelback')" data-ng-controller="MessageForm">
-                    <h2>Give a feelback</h2>
-                    <fieldset data-role="controlgroup">
-                        <label for="textinput2">Name</label>
-                        <input id="textinput2" type="text" data-ng-model="name" required>
-                    </fieldset>
-                    <fieldset data-role="controlgroup">
-                        <label for="textarea2">Comment</label>
-                        <textarea id="textarea2" data-ng-model="msg" style="resize: none" required> </textarea>
-                    </fieldset>
-                    <input type="submit" value="Post">
+                <div data-ng-switch="offline">
+                    <form data-ng-switch-when="false" data-ngm-if="!offline" data-ajax="false" data-ng-submit="submit('feelback')" data-ng-controller="MessageForm">
+                        <h2>Give a feelback</h2>
+                        <fieldset data-role="controlgroup">
+                            <label for="textinput2">Name</label>
+                            <input id="textinput2" type="text" data-ng-model="name" required>
+                        </fieldset>
+                        <fieldset data-role="controlgroup">
+                            <label for="textarea2">Comment</label>
+                            <textarea id="textarea2" data-ng-model="msg" style="resize: none" required> </textarea>
+                        </fieldset>
+                        <input type="submit" value="Post">
+                    </form>
+                    <p data-ng-switch-when="true" align="center">Feelbacks are not available in offline mode</p>
+                </div>
+            </div>
+        </div>
+
+        <!--MAP PAGE-->
+        <div data-role="page" id="map" data-ng-controller="Map">
+            <div data-role="header"><h3>Where is Lille ?</h3>
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                <a data-role="button" data-icon="refresh" data-iconpos="notext"
+                   data-ng-click="locate()" data-mini="true"
+                   data-inline="true">Refresh</a>
+            </div>
+            <div data-role="content">
+                <div id="map-canvas" style="border: 1px solid #777777; height: 375px; width: 100%"> </div>
+                <form data-ajax="false" data-ng-submit="calculate()">
+                    <div data-role="fieldcontain">
+                        <label for="textinput3">From</label>
+                        <input id="textinput3" type="text" data-ng-model="from">
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="textinput4">To</label>
+                        <input id="textinput4" type="text" data-ng-model="to">
+                    </div>
+                    <input type="submit" value="get directions">
                 </form>
+                <div id="map-panel"></div>
             </div>
         </div>
     </body>
