@@ -19,13 +19,13 @@ angular.module('atosApp.Filters', [])
             result.push(i);
         return result;
     };
-}).filter('Category', function() {
+}).filter('Room', function() {
     return function(input, predicate) {
         if(!predicate) return input;
         var result = new Array();
         for (var index in input) {
             var occ = input[index];
-            if (occ.category === predicate)
+            if (occ.where === predicate)
                 result.push(occ);
         }
         return result;

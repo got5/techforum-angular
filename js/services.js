@@ -33,6 +33,7 @@ services.factory('offline', function($resource) {
 services.factory('routines', function($http, $q) {
     return {
         get: function(config) {
+            $.mobile.loading('show');
             var relativeUrl = config.relativeUrl || '/';
             var localKey = config.localKey;
             var online = config.online;
@@ -48,21 +49,25 @@ services.factory('routines', function($http, $q) {
                     deffered.reject(Error.NO_LOCAL_DATA);
 
                 }
+                $.mobile.loading('hide');
                 return deffered.promise;
-            } else if (navigator.network && navigator.network.connection.type === Connection.NONE) {
+            } else if (Connection.NONE === navigator.connection.type) {
                 console.log("- GET (" + localKey + ") fail from connection");
                 deffered.reject(Error.NO_INTERNET);
+                $.mobile.loading('hide');
                 return deffered.promise;
             } else {
                 return $http.get(WEBSERVICE_HOST + relativeUrl).then(
                         function(response) {
                             console.log("- GET (" + localKey + ") success from host");
                             window.localStorage.setItem(localKey, angular.toJson(response.data));
+                            $.mobile.loading('hide');
                             return response.data;
                         },
                         function(error) {
                             console.log("- GET (" + localKey + ") fail from host")
                             deffered.reject(Error.NO_RESPONSE);
+                            $.mobile.loading('hide'); 
                             return deffered.promise;
                         }
                 );

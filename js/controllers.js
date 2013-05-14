@@ -1,65 +1,58 @@
 
-atosApp.controller('ConferenceList', function ConferenceList($scope, srvConferences, offline, cordovaReady) {
-    $scope.categories = ['conference', 'demo', 'poster'];
+atosApp.controller('ConferenceList', function ConferenceList($scope, srvConferences, offline) {
     $scope.daySize = 2;
-    
-    $scope.swipeList = ['conference','demo','poster'];
-    $scope.swipeIndex = 0;
-    $scope.swipe = function(direction) { 
-        if(direction === "right") {
-            $scope.Category($scope.swipeList[(++$scope.swipeIndex)%3]);
-        } else if(direction === "left") {
-            $scope.Category($scope.swipeList[(--$scope.swipeIndex)%3]);
-        }
-    };
+    $scope.roomSize = 4;
 
-    $scope.Category = function(value) {
-        $scope.category = value;
-        if ($scope.day)
-            $scope.prevDay = $scope.day;
-        $scope.Day((value === "conference") ? $scope.prevDay : 0);
+    $scope.Room = function(value) {
+        $scope.room = value;
+        console.log(value);
     };
     $scope.Day = function(value) {
         $scope.day = value;
     };
 
-    $("#conferenceListPopup").popup();
-    $scope.update = function(online) {
-        $("#conferenceListPopup").popup("open", {
-            transition: "slidedown",
-            y: 0
-        });
-
-        srvConferences.getAll(online).then(
-                function(data) {
+    $scope.update = function(online, verbose) {
+        var success = function(data) {
+            $scope.conferences = data;
+            console.log(data);
+            if (verbose) {
+                $.mobile.loading('show', {textVisible: true, textonly: true, text: "done"});
+                setTimeout(function() {
+                    $.mobile.loading('hide')
+                }, 1200);
+            }
+        };
+        var error = function(error) {
+            if (error === Error.NO_INTERNET) {
+                navigator.notification.confirm("You are not connected to internet. Load local data?", function(i) {
+                    if (i === 1)
+                        $scope.update(false, true);
+                });
+            } else if (error === Error.NO_LOCAL_DATA) {
+                offline.populate(function(data) {
                     $scope.conferences = data;
-                },
-                function(error) {
-                    console.log("error: " + error);
-                    if (error === Error.NO_LOCAL_DATA) {
-                        offline.populate(function(data) {
-                            $scope.conferences = data;
-                        });
-                    }
-                }
-        );
+                });
+            } else {
+                alert(error);
+            }
+        };
+        srvConferences.getAll(online).then(success, error);
     };
 
-    $scope.Category("conference");
-    $scope.Day(1);
-    //$scope.update();
-    cordovaReady($scope.update());
+    $scope.activate = function() {
+        $scope.Room(1);
+        $scope.Day(1);
+        $scope.update();
+    };
 });
 
 atosApp.controller('ConferenceDetails', function ConferenceDetails($scope, srvConferences, srvMessages, offline) {
     $scope.messages = [];
-    $scope.offline = true;
-
     $scope.update = function() {
-        $scope.selectConference($scope.idConference);
+        $scope.activate($scope.idConference);
     };
 
-    $scope.selectConference = function(idConference) {
+    $scope.activate = function(idConference) {
         $scope.idConference = idConference;
         srvConferences.get(idConference).then(
                 function(data) {
@@ -69,9 +62,9 @@ atosApp.controller('ConferenceDetails', function ConferenceDetails($scope, srvCo
                         $scope.messages = data;
                     });
                 },
-                function(error) {
+                function() {
+                    $scope.offline = true;
                     offline.populate(function(data) {
-                        $scope.offline = true;
                         $scope.selection = $.grep(data, function(item) {
                             return item._id === idConference;
                         })[0];
@@ -93,8 +86,7 @@ atosApp.controller('MessageForm', function MessageForm($scope, srvMessages) {
             data["idConference"] = $scope.$parent.selection._id;
 
         srvMessages.post(data, type).then(function(data) {
-            //$("#globalPopup").html("<p>Comment saved</p>").popup("open");
-            alert("Comment saved");
+            alert("Message sent, thank you.");
             $scope.$parent.messages.push(data);
             $scope.name = "";
             $scope.msg = "";
@@ -104,22 +96,24 @@ atosApp.controller('MessageForm', function MessageForm($scope, srvMessages) {
 
 atosApp.controller('Feelbacks', function Feelbacks($scope, srvMessages, cordovaReady) {
     $scope.messages = [];
-    $scope.offline = true;
-    cordovaReady(srvMessages.getFeelbacks().then(function(data) {
-        $scope.offline = false;
-        $scope.messages = data;
-    }, function(error) {
-        $scope.offline = true;
-    }));
+    $scope.activate = function() {
+        $scope.offline = Connection.NONE === navigator.connection.type;
+        srvMessages.getFeelbacks().then(function(data) {
+            $scope.offline = false;
+            $scope.messages = data;
+        }, function() {
+            $scope.offline = true;
+        });
+    };
 });
 
-atosApp.controller('Map', function Map($scope, cordovaReady) {
+atosApp.controller('Map', function Map($scope) {
     // lat and lng from lille and atos worldline
     var ll = new google.maps.LatLng(50.6333, 3.0667);
     var aw = new google.maps.LatLng(50.566261, 3.035904);
 
-    $scope.from = ll.toString();
-    $scope.to = aw.toString();
+    $scope.from = aw.toString();
+    $scope.to = "Atos Worldline, rue de la pointe, Seclin France";
 
     $scope.mapOptions = {
         center: aw,
@@ -130,8 +124,8 @@ atosApp.controller('Map', function Map($scope, cordovaReady) {
     $scope.canvas = document.getElementById("map-canvas");
     $scope.panel = document.getElementById("map-panel");
 
-    $scope.locate = cordovaReady(function() {
-        console.log("Retrieve location data");
+    $scope.locate = function() {
+        $.mobile.loading('show', {text: "Getting your position...", textVisible: true, textonly: true});
         navigator.geolocation.getCurrentPosition(
                 function(position) {
                     var lat = position.coords.latitude;
@@ -140,17 +134,23 @@ atosApp.controller('Map', function Map($scope, cordovaReady) {
                     $scope.markerPos.setPosition(pos);
                     $scope.map.setCenter(pos);
                     $scope.from = pos.toString();
-                    console.log($scope.from);
+                    //$.mobile.loading('hide');
+                    setTimeout(function() {
+                        $.mobile.loading('hide');
+                    }, 1200);
                 },
                 function(error) {
-                    console.log(error.message);
+                    $.mobile.loading('show', {text: error.message, textVisible: true, textonly: true});
+                    setTimeout(function() {
+                        $.mobile.loading('hide');
+                    }, 1200);
                     var pos = ll;
                     $scope.markerPos.setPosition(pos);
                     $scope.map.setCenter(pos);
                     $scope.from = pos.toString();
                 }
         );
-    });
+    };
 
     $scope.initialize = function() {
         $scope.map = new google.maps.Map($scope.canvas, $scope.mapOptions);
@@ -175,9 +175,14 @@ atosApp.controller('Map', function Map($scope, cordovaReady) {
             destination: $scope.to,
             travelMode: google.maps.TravelMode.DRIVING
         };
+        $.mobile.loading('show', {text: "Getting directions...", textVisible: true, textonly: true});
         $scope.directionsService.route(request, function(result, status) {
-            if (status === google.maps.DirectionsStatus.OK)
+            if (status === google.maps.DirectionsStatus.OK) {
                 $scope.directionsDisplay.setDirections(result);
+            }
+            setTimeout(function() {
+                $.mobile.loading('hide');
+            }, 1200);
         });
     };
 

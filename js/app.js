@@ -6,11 +6,12 @@ var atosApp = angular.module('atosApp', ['ngResource','atosApp.Services', 'atosA
                 when('/', { templateUrl: "#main"}).
                 when('/conferences/details/:id', {
             templateUrl: '#detailsConference',
-            onActivate: 'selectConference(id)',
+            onActivate: 'activate(id)',
             jqmOptions: {transition: 'slide'}
         }).
                 when('/conferences', {
             templateUrl: '#list',
+            onActivate: 'activate()',
             jqmOptions: {transition: 'slide'}
         }).
                 when('/map', {
@@ -19,6 +20,7 @@ var atosApp = angular.module('atosApp', ['ngResource','atosApp.Services', 'atosA
         }).
                 when('/feelbacks', {
             templateUrl: '#feelbacks',
+            onActivate: 'activate()',
             jqmOptions: {transition: 'slide'}
         }).
                 otherwise({redirectTo: '/'});
