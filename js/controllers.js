@@ -5,7 +5,6 @@ atosApp.controller('ConferenceList', function ConferenceList($scope, srvConferen
 
     $scope.Room = function(value) {
         $scope.room = value;
-        console.log(value);
     };
     $scope.Day = function(value) {
         $scope.day = value;
