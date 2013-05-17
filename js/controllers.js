@@ -52,22 +52,23 @@ atosApp.controller('ConferenceDetails', function ConferenceDetails($scope, srvCo
     };
 
     $scope.activate = function(idConference) {
+
+        $scope.offline = Connection.NONE === navigator.connection.type;
         $scope.idConference = idConference;
         srvConferences.get(idConference).then(
                 function(data) {
-                    $scope.offline = false;
                     $scope.selection = data;
-                    srvMessages.getComments(data._id).then(function(data) {
-                        $scope.messages = data;
-                    });
                 },
                 function() {
-                    $scope.offline = true;
                     offline.populate(function(data) {
                         $scope.selection = $.grep(data, function(item) {
                             return item._id === idConference;
                         })[0];
                     });
+                });
+        srvMessages.getComments(idConference).then(
+                function(data) {
+                    $scope.messages = data;
                 });
     };
 });
@@ -93,15 +94,16 @@ atosApp.controller('MessageForm', function MessageForm($scope, srvMessages) {
     };
 });
 
-atosApp.controller('Feelbacks', function Feelbacks($scope, srvMessages, cordovaReady) {
-    $scope.messages = [];
+atosApp.controller('Feelbacks', function Feelbacks($scope, srvMessages) {
     $scope.activate = function() {
+        $scope.messages = [];
         $scope.offline = Connection.NONE === navigator.connection.type;
+        $scope.messagesLoaded = false;
         srvMessages.getFeelbacks().then(function(data) {
-            $scope.offline = false;
             $scope.messages = data;
+            $scope.messagesLoaded = true;
         }, function() {
-            $scope.offline = true;
+            $scope.messagesLoaded = false;
         });
     };
 });

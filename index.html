@@ -45,7 +45,7 @@
                 <h3>Conferences</h3>
             </div>
             <div data-role="content">
-                
+
                 <div data-role="navbar">
                     <ul>
                         <li data-ng-repeat='d in [1,daySize] | range'>
@@ -157,6 +157,10 @@
                    data-rel="back" data-transition="slide" 
                    data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
                     Back</a>
+                
+                <a data-role="button" data-icon="refresh" data-iconpos="notext"
+                   data-ng-click="activate()" data-mini="true"
+                   data-inline="true">Refresh</a>
             </div>
             <div data-role="content">
                 <ul data-role="listview" data-inset="true">
@@ -168,18 +172,21 @@
                     </li>
                 </ul>
                 <div data-ng-switch="offline">
-                    <form data-ng-switch-when="false" data-ngm-if="!offline" data-ajax="false" data-ng-submit="submit('feelback')" data-ng-controller="MessageForm">
-                        <h2>Give a feelback</h2>
-                        <fieldset data-role="controlgroup">
-                            <label for="textinput2">Name</label>
-                            <input id="textinput2" type="text" data-ng-model="name" required>
-                        </fieldset>
-                        <fieldset data-role="controlgroup">
-                            <label for="textarea2">Comment</label>
-                            <textarea id="textarea2" data-ng-model="msg" style="resize: none" required> </textarea>
-                        </fieldset>
-                        <input type="submit" value="Post">
-                    </form>
+                    <div data-ng-switch-when="false">
+                        <form data-ngm-if="messagesLoaded" data-ajax="false" data-ng-submit="submit('feelback')" data-ng-controller="MessageForm">
+                            <h2>Give a feelback</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="textinput2">Name</label>
+                                <input id="textinput2" type="text" data-ng-model="name" required>
+                            </fieldset>
+                            <fieldset data-role="controlgroup">
+                                <label for="textarea2">Comment</label>
+                                <textarea id="textarea2" data-ng-model="msg" style="resize: none" required> </textarea>
+                            </fieldset>
+                            <input type="submit" value="Post">
+                        </form>
+                        <p data-ngm-if="!messagesLoaded" align="center">Receiving messages from server...</p>
+                    </div>
                     <p data-ng-switch-when="true" align="center">Feelbacks are not available in offline mode</p>
                 </div>
             </div>
