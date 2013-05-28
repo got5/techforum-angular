@@ -46,3 +46,6 @@ function printLocalStorage(full) {
 }
 
 printLocalStorage(false);
+document.addEventListener('deviceready', function() {
+	if(navigator && navigator.splashcreen) navigator.splashsreen.hide();
+	}, false);

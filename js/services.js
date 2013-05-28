@@ -11,20 +11,12 @@ var Error = {
 };
 
 services.factory('offline', function($resource) {
-    var save = null;
     return {
         populate: function(fn) {
-            if(save) {
-                fn(save);
-            } else {
-                $resource('data/conferences.json').query(function(data) {
-                    //simulate mongodb id
-                    for(var index in data) data[index]["_id"] = index; 
-                    //
-                    save = data;
-                    fn(save);
-                });
-            }
+            $resource('data/conferences.json').query(function(data) {
+                fn(data);
+            });
+
         }
     };
 });
@@ -67,7 +59,7 @@ services.factory('routines', function($http, $q) {
                         function(error) {
                             console.log("- GET (" + localKey + ") fail from host")
                             deffered.reject(Error.NO_RESPONSE);
-                            $.mobile.loading('hide'); 
+                            $.mobile.loading('hide');
                             return deffered.promise;
                         }
                 );

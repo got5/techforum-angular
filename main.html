@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.1.min.css"/>
+        <title> TechForum Mobile App </title>
+
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script src="js/lib/jquery-1.9.1.min.js"></script>
+        <script src="js/lib/jquery.mobile-1.3.1.min.js"></script>
+        <script src="js/lib/angular-1.0.7.min.js"></script>
+        <script src="js/lib/angular-resource.min.js"></script>
+        <script src="js/lib/jquery-mobile-angular-adapter.min.js"></script>
+        <script src="phonegap.js"></script>
+
+        <script src="js/app.js"></script> 
+        <script src="js/services.js"></script> 
+        <script src="js/filters.js"></script> 
+        <script src="js/controllers.js"></script> 
+
+    </head>
+    <body data-ng-app="atosApp">
+        <!--MAIN PAGE-->
+        <div data-role="page" id="main">
+            <div data-role="header"><h3>TechForum App</h3></div>
+            <div data-role="content">
+                <a data-role="button" href="#!/conferences">Conferences</a>
+                <a data-role="button" href="#!/map">Map</a>
+                <a data-role="button" href="#!/feelbacks">Feedbacks</a>
+            </div>
+        </div>
+
+        <!--CONFERENCES PAGE-->
+        <div id="list" data-role="page" data-ng-controller="ConferenceList">
+            <div data-role="header">
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                <a data-role="button" data-icon="refresh" data-iconpos="notext"
+                   data-ng-click="update(true,true)" data-mini="true"
+                   data-inline="true">Refresh</a>
+                <h3>Conferences</h3>
+            </div>
+            <div data-role="content">
+
+                <div data-role="navbar">
+                    <ul>
+                        <li data-ng-repeat='d in [1,daySize] | range'>
+                            <a href="#" 
+                               data-transition="none"
+                               data-ng-click="Day(d)"
+                               data-ng-class="{'ui-btn-active ui-state-persist':day==d}">
+                                D{{d}}</a></li>
+                    </ul>
+                </div>
+                <div data-role="navbar">
+                    <ul>
+                        <li data-ng-repeat='r in [1,roomSize] | range'>
+                            <a href="#" 
+                               data-transition="none"
+                               data-ng-click="Room(r)"
+                               data-ng-class="{'ui-btn-active ui-state-persist':room==r}">
+                                Room {{r}}</a></li>
+                    </ul>
+                </div>
+                <ul data-ng-repeat="c in conferences | Day:day | Room:room | orderBy:'when.start' " 
+                    data-role="listview" data-divider-theme="a" data-inset="true">
+                    <li data-role="list-divider">
+                        {{c.when.start}}
+                        <div style="float: right">{{c.theme}}</div>
+                    </li>
+                    <li data-theme="c">
+                        <a href='#!/conferences/details/{{c._id}}'>
+                            {{c.title + " by " + c.author}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--DETAILS CONFERENCE PAGE-->
+        <div id="detailsConference" data-role="page" data-ng-controller="ConferenceDetails">
+            <div data-role="header">
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                <a data-role="button" data-icon="refresh" data-iconpos="notext"
+                   data-ng-click="update()" data-mini="true"
+                   data-inline="true">Refresh</a>
+                <h3>Details</h3>
+            </div>
+            <div data-role="content" >
+                <ul data-role="listview" data-inset="true">
+                    <li>
+                        <h2>Title</h2>
+                        <p style="overflow: visible; white-space: normal">{{selection.title}}</p>
+                    </li>
+                    <li>
+                        <h2>Speaker</h2>
+                        <p>{{selection.author}}</p>
+                    </li>
+                    <li>
+                        <h2>Theme</h2>
+                        <p>{{selection.theme}}</p>
+                    </li>
+                    <li>
+                        <h2>When ?</h2>
+                        <p>{{'day '+(selection.day||1)+' @ '+selection.when.start+' => '+selection.when.end}}</p>
+                    </li>
+                    <li>
+                        <h2>Where ?</h2>
+                        <p>Room {{selection.where}}</p>
+                    </li>
+                </ul>    
+                <div data-role="collapsible-set" data-ngm-if="postMsgAllowed"
+                     data-theme="a" data-content-theme="d">
+                    <div data-role="collapsible" data-collapsed="true">
+                        <h3>Comments ({{messages.length}})</h3>
+                        <ul data-role="listview">
+                            <li data-ng-repeat="m in messages | orderBy:'-date'">
+                                <p class="ui-li-aside"><strong>{{ m.date | date:'dd/MM/yyyy @ HH:mm'}}</strong></p>
+                                <h3></h3>
+                                <p><strong>{{ m.name }}</strong></p>
+                                <p>{{m.msg}}</p>
+                            </li>
+                        </ul>
+                        <div data-ng-switch="offline">
+                            <form data-ng-switch-when="false" data-ajax="false" data-ng-submit="submit('comment')" data-ng-controller="MessageForm">
+                                <h2>Add a comment </h2>
+                                <fieldset data-role="controlgroup">
+                                    <label for="textinput1">Name</label>
+                                    <input id="textinput1" type="text" data-ng-model="name" required>
+                                </fieldset>
+                                <fieldset data-role="controlgroup">
+                                    <label for="textarea1">Comment</label>
+                                    <textarea id="textarea1" data-ng-model="msg" style="resize: none" required> </textarea>
+                                </fieldset>
+                                <input data-ngm-if="name && msg" type="submit" value="Post">
+                            </form>
+                            <p data-ng-switch-when="true" align="center">Posting comments is not available in offline mode</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!--FEEDBACKS PAGE-->
+        <div data-role="page" id="feelbacks" data-ng-controller="Feelbacks">
+            <div data-role="header"><h3>Feedbacks</h3>
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                
+                <a data-role="button" data-icon="refresh" data-iconpos="notext"
+                   data-ng-click="activate()" data-mini="true"
+                   data-inline="true">Refresh</a>
+            </div>
+            <div data-role="content">
+                <ul data-role="listview" data-inset="true">
+                    <li data-ng-repeat="m in messages | orderBy:'-date'">
+                        <p class="ui-li-aside"><strong>{{ m.date | date:'dd/MM/yyyy @ HH:mm'}}</strong></p>
+                        <h3></h3>
+                        <p><strong>{{ m.name }}</strong></p>
+                        <p style="overflow: visible; white-space: normal">{{m.msg}}</p>
+                    </li>
+                </ul>
+                <div data-ng-switch="offline">
+                    <div data-ng-switch-when="false">
+                        <form data-ngm-if="messagesLoaded" data-ajax="false" data-ng-submit="submit('feelback')" data-ng-controller="MessageForm">
+                            <h2>Give a feedback</h2>
+                            <fieldset data-role="controlgroup">
+                                <label for="textinput2">Name</label>
+                                <input id="textinput2" type="text" data-ng-model="name" data-ng-required="true">
+                            </fieldset>
+                            <fieldset data-role="controlgroup">
+                                <label for="textarea2">Comment</label>
+                                <textarea id="textarea2" data-ng-model="msg" style="resize: none" data-ng-required="true"> </textarea>
+                            </fieldset>
+                            <input data-ngm-if="name && msg" type="submit" value="Post">
+                        </form>
+                        <p data-ngm-if="!messagesLoaded" align="center">Receiving messages from server...</p>
+                    </div>
+                    <p data-ng-switch-when="true" align="center">Feedbacks are not available in offline mode</p>
+                </div>
+            </div>
+        </div>
+
+        <!--MAP PAGE-->
+        <div data-role="page" id="map" data-ng-controller="Map">
+            <div data-role="header"><h3>Where is Atos ?</h3>
+                <a data-role="button" data-direction="reverse" 
+                   data-rel="back" data-transition="slide" 
+                   data-icon="arrow-l" data-iconpos="left" class="ui-btn-left">
+                    Back</a>
+                <a data-role="button" data-icon="refresh" data-iconpos="notext"
+                   data-ng-click="locate()" data-mini="true"
+                   data-inline="true">Refresh</a>
+            </div>
+            <div data-role="content">
+                <div id="map-canvas" style="border: 1px solid #777777; height: 375px; width: 100%"> </div>
+                <form data-ajax="false" data-ng-submit="calculate()">
+                    <div data-role="fieldcontain">
+                        <label for="textinput3">From</label>
+                        <input id="textinput3" type="text" data-ng-model="from">
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="textinput4">To</label>
+                        <input id="textinput4" type="text" data-ng-model="to">
+                    </div>
+                    <input type="submit" value="get directions">
+                </form>
+                <div id="map-panel"></div>
+            </div>
+        </div>
+    </body>
+</html>
